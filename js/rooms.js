@@ -240,7 +240,10 @@ export function buildWorld(scene) {
     prompt: () => "Buka Pintu Keluar",
     interact: (ctx) => {
       if (ctx.candles.count() >= 6) { ctx.game.menang(); }
-      else ctx.hud.pesan("Butuh 6 lilin untuk membuka pintu ini");
+      else {
+        ctx.hud.pesan("Terkunci — butuh 6 lilin untuk membuka pintu ini");
+        ctx.audio.terkunci();
+      }
     },
   });
 
