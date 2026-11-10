@@ -3,6 +3,7 @@
 import { formatJam, formatSisa } from "./logic.js";
 
 export const DURASI_SESI = 540; // 9 menit waktu nyata (tengah-tengah 8–10 menit)
+export const MASA_TENGGANG = 5; // detik setelah mulai: hantu tidak bisa mengejar/menangkap
 export const JARAK_INTERAKSI = 2; // meter
 
 export function createGame(deps) {
@@ -125,10 +126,10 @@ export function createGame(deps) {
 
     costumes.update(dt);
 
-    // Hantu
+    // Hantu (masa tenggang = 5 detik pertama: tidak mengejar & tidak menangkap)
     ghosts.update(dt, timer, player.pos, {
       onCatch: () => kalah("tertangkap"),
-    });
+    }, timer < MASA_TENGGANG);
     if (state !== "bermain") return; // kalah saat update hantu
 
     // Peringatan hantu dekat (≤ 6 m): vignette merah + suara berkala
