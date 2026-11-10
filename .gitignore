@@ -1,0 +1,36 @@
+# Dependensi
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist/
+build/
+out/
+
+# Sistem operasi
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Log & cache
+*.log
+npm-debug.log*
+.cache/
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Python (perkakas bantu)
+__pycache__/
+*.pyc
+.venv/
+venv/
