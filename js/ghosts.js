@@ -8,9 +8,9 @@ export const JARAK_KEJAR = 8;
 export const JARAK_TANGKAP = 1;
 
 const RUTE_PATROLI = [
-  { nama: "A", titik: [[0, 0], [-9, 0], [0, 0]] },                    // lobi <-> perpustakaan
-  { nama: "B", titik: [[0, 0], [9, 0], [0, 0]] },                     // lobi <-> dapur
-  { nama: "C", titik: [[0, 12], [0, 5], [0, 0], [2.7, -3], [4, 0], [2.7, -3], [0, 0], [0, 5]] }, // basement <-> lobi <-> loteng
+  { nama: "A", titik: [[-9, 0], [-5.5, 0], [-9, 0]], y: 0 },             // perpustakaan saja — jangan masuk lobi
+  { nama: "B", titik: [[9, 0], [5.5, 0], [9, 0]], y: 0 },               // dapur saja — jangan masuk lobi
+  { nama: "C", titik: [[0, 12], [0, 9], [0, 12]], y: -3 },              // basement saja — beda lantai dari lobi
 ];
 const RUANG_KECIL = [
   { ruang: "perpustakaan", x0: -12.5, z0: -3.5, x1: -5.5, z1: 3.5, x: -9, z: -2 },
@@ -50,11 +50,14 @@ export function createGhosts(scene, world) {
   for (const r of RUTE_PATROLI) {
     const model = buatModelHantu(1, 0xe8e8f0, 0xff2222);
     const [sx, sz] = r.titik[0];
-    model.position.set(sx, world.floorHeightAt(sx, sz, 0) + 0.9, sz);
+    // y logika dihitung dari lantai rute (r.y), BUKAN dibaca balik dari
+    // model.position.y — posisi render bukan sumber kebenaran logika.
+    const yAwal = r.y + 0.9;
+    model.position.set(sx, yAwal, sz);
     scene.add(model);
     hantu.push({
       jenis: "patroli", nama: r.nama, model, rute: r.titik, idx: 1,
-      x: sx, z: sz, y: model.position.y, mode: "patroli",
+      x: sx, z: sz, y: yAwal, mode: "patroli",
       jedaWaypoint: 0, hilangPandangan: 0, fase: Math.random() * 10,
     });
   }
@@ -65,7 +68,7 @@ export function createGhosts(scene, world) {
     scene.add(model);
     hantu.push({
       jenis: "kecil", ruang: rk.ruang, model, batas: rk,
-      x: rk.x, z: rk.z, y: model.position.y,
+      x: rk.x, z: rk.z, y: y0 + 0.9,
       target: null, lari: 0, lariDari: null, fase: Math.random() * 10,
     });
   }
@@ -91,12 +94,14 @@ export function createGhosts(scene, world) {
     return d - langkah < 0.05;
   }
 
-  function update(dt, t, pemain, callbacks) {
+  // grace = masa tenggang setelah mulai: hantu tidak mengejar & tidak bisa
+  // menangkap (pemain sempat orientasi). Lihat MASA_TENGGANG di game.js.
+  function update(dt, t, pemain, callbacks, grace = false) {
     for (const h of hantu) {
       const jarakPemain = Math.hypot(pemain.x - h.x, pemain.z - h.z);
       const bedaY = Math.abs(pemain.y - (h.y - 0.9));
       if (h.jenis === "patroli") {
-        const terlihat = jarakPemain <= JARAK_KEJAR && bedaY < 2 &&
+        const terlihat = !grace && jarakPemain <= JARAK_KEJAR && bedaY < 2 &&
           garisPandangBersih(h.x, h.z, h.y, pemain.x, pemain.z, pemain.y);
         if (terlihat) { h.mode = "kejar"; h.hilangPandangan = 0; }
         else if (h.mode === "kejar") {
@@ -150,8 +155,10 @@ export function createGhosts(scene, world) {
       const lantaiY = world.floorHeightAt(h.x, h.z, h.y - 0.9);
       h.y = lantaiY + 0.9 + Math.sin(t * 2 + h.fase) * 0.12;
       h.model.position.set(h.x, h.y, h.z);
-      // Tertangkap?
-      if (jarakPemain < JARAK_TANGKAP && bedaY < 2) {
+      // Tertangkap? Hanya bila jarak < 1 m SELANTAI dan bukan masa tenggang.
+      // (jarakPemain dihitung sebelum hantu bergerak di frame ini — jadi
+      // tangkapan selalu butuh kedekatan nyata, tidak pernah dari kejauhan.)
+      if (!grace && jarakPemain < JARAK_TANGKAP && bedaY < 2) {
         callbacks.onCatch(h);
         return;
       }
