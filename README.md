@@ -1,39 +1,47 @@
 # Rumah Hantu: Pesta Kostum
 
-Game 3D first-person bertema rumah hantu, dibuat dengan Three.js untuk hackathon **Kiroween 2026**.
+Game 3D first-person bertema rumah hantu, dibuat dengan Three.js untuk hackathon **Kiroween 2026** (kategori Costume Contest).
 
-Pemain menjelajahi sebuah rumah hantu di malam Halloween: menyusuri lorong gelap berbekal senter, mengumpulkan permen dan item kostum, menghindari (atau mengakali) hantu penghuni rumah, dan menyelesaikan pesta kostum sebelum tengah malam.
+Pemain datang ke pesta kostum Halloween di sebuah mansion — pestanya sudah bubar, para tamu berubah jadi hantu. Kumpulkan **6 lilin** di 5 ruangan, hindari hantu patroli, dan keluar lewat pintu utama **sebelum tengah malam**.
 
-## Fitur (rencana)
+## Mekanik Kostum
 
-- Eksplorasi first-person di dalam rumah hantu 3D (Three.js, WebGL)
-- Senter, kegelapan, dan efek suasana Halloween
-- Koleksi permen & item kostum yang tersebar di rumah
-- Hantu penghuni rumah dengan perilaku patroli
-- Skor dan timer menuju tengah malam
-- Kontrol keyboard + mouse, bisa dimainkan di browser desktop dan HP
+Ganti kostum di lemari tiap ruangan — tiap kostum punya satu kekuatan:
+
+| Kostum | Kekuatan |
+|---|---|
+| 👻 Hantu | Tembus dinding 5 detik |
+| 🧛 Vampir | Lihat dalam gelap (basement) |
+| 🎃 Labu | Menakuti hantu kecil |
+| 🧙 Penyihir | Membuka pintu terkunci |
+
+## Ruangan
+
+Lobi, Perpustakaan, Dapur, Basement (paling gelap, 2 lilin), Loteng — dihubungkan koridor dan tangga. 2 pintu terkunci (perpustakaan & basement) hanya bisa dibuka kostum Penyihir.
+
+## Kontrol
+
+- **Desktop:** WASD bergerak, mouse melihat (klik untuk kunci pointer), E interaksi, Q kemampuan, 1–4 ganti kostum di dekat lemari.
+- **HP:** joystick virtual kiri, seret layar untuk melihat, tombol ✋ aksi, tombol ✨ kemampuan.
 
 ## Cara Menjalankan
 
-Game ini adalah aplikasi web statis — tidak butuh build step.
+Game ini aplikasi web statis — tidak butuh build step. Semua tekstur dibuat prosedural lewat canvas, semua suara sintetis WebAudio (tanpa file gambar/audio eksternal).
 
 ```bash
-# 1. Masuk ke folder repo
-cd rumah-hantu-kiroween
-
-# 2. Jalankan server statis apa saja, contoh:
-npx serve .
-# atau:
+# Jalankan server statis apa saja, contoh:
 python3 -m http.server 8000
 ```
 
-Lalu buka `http://localhost:8000` (atau port yang ditampilkan server) di browser.
+Lalu buka `http://localhost:8000` di browser.
 
-## Teknologi
+## Struktur
 
-- [Three.js](https://threejs.org/) — rendering 3D
-- JavaScript (ES Modules), HTML, CSS — tanpa framework build
+- `index.html` — satu-satunya halaman (import map Three.js via CDN)
+- `css/style.css` — HUD, menu, kontrol sentuh
+- `js/` — modul: `main`, `game`, `scene`, `rooms`, `player`, `costumes`, `ghosts`, `candles`, `hud`, `controls`, `audio`, `textures`, `logic`
+- `.kiro/` — spec Kiro (requirements, design, tasks)
 
 ## Lisensi
 
-Proyek ini dilisensikan di bawah [Lisensi MIT](LICENSE).
+MIT
