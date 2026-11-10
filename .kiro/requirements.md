@@ -122,7 +122,7 @@ Selain hantu patroli, ada hantu kecil yang berkeliaran lebih bebas dan bisa dita
 
 **REQ-26 — Hantu mengejar saat pemain terlihat**
 Hantu patroli yang melihat pemain dalam jarak dan garis pandang tertentu akan mengejar pemain.
-*Kriteria penerimaan:* saat pemain berada dalam jarak kejar dan terlihat (tidak terhalang dinding), hantu berubah dari mode patroli ke mode kejar (kecepatan bertambah, arah menuju pemain); saat pemain lolos dari pandangan/jarak selama beberapa detik, hantu kembali ke rute patrolinya.
+*Kriteria penerimaan:* saat pemain berada dalam jarak kejar dan terlihat (tidak terhalang dinding), hantu berubah dari mode patroli ke mode kejar (kecepatan bertambah, arah menuju pemain); saat pemain lolos dari pandangan/jarak selama beberapa detik, hantu kembali ke rute patrolinya. Masa tenggang: 5 detik pertama setelah mulai, hantu patroli tidak mengejar dan tidak bisa menangkap; tidak ada hantu patroli yang bisa melihat titik spawn pemain saat permainan dimulai.
 
 **REQ-27 — Tertangkap hantu = kalah**
 Jika hantu menyentuh pemain, permainan berakhir kalah.
