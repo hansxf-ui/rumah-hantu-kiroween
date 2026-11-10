@@ -1,0 +1,73 @@
+/* Rumah Hantu: Pesta Kostum — gaya HUD, menu, kontrol sentuh */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0612; }
+body { font-family: "Segoe UI", system-ui, -apple-system, sans-serif; color: #f5eeda; touch-action: none; user-select: none; }
+#game-container, #game-container canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+.hidden { display: none !important; }
+
+/* Lapisan efek visual */
+#vignette-kostum, #vignette-bahaya, #vignette-gelap { position: fixed; inset: 0; pointer-events: none; z-index: 5; transition: box-shadow .3s, opacity .3s; }
+#vignette-kostum { box-shadow: inset 0 0 120px 30px rgba(255,255,255,0); }
+#vignette-kostum.hantu { box-shadow: inset 0 0 140px 40px rgba(220,235,255,.55); }
+#vignette-kostum.vampir { box-shadow: inset 0 0 140px 40px rgba(160,0,20,.55); }
+#vignette-kostum.lab { box-shadow: inset 0 0 140px 40px rgba(255,120,0,.55); }
+#vignette-kostum.penyihir { box-shadow: inset 0 0 140px 40px rgba(140,60,255,.55); }
+#vignette-bahaya { box-shadow: inset 0 0 120px 20px rgba(255,0,0,0); opacity: 0; }
+#vignette-bahaya.aktif { animation: denyut-bahaya 1s ease-in-out infinite; }
+@keyframes denyut-bahaya { 0%,100% { box-shadow: inset 0 0 90px 15px rgba(255,0,0,.15); } 50% { box-shadow: inset 0 0 150px 45px rgba(255,0,0,.55); } }
+#vignette-gelap { background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,.55) 100%); z-index: 4; }
+
+/* HUD */
+#hud { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+#hud-atas { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 96%; }
+.hud-kotak { background: rgba(10,6,20,.72); border: 1px solid rgba(255,170,40,.45); border-radius: 10px; padding: 7px 12px; font-size: 15px; font-weight: 600; text-shadow: 0 1px 3px #000; white-space: nowrap; }
+#hud-kemampuan { position: absolute; top: 58px; left: 50%; transform: translateX(-50%); background: rgba(60,20,90,.8); border: 1px solid rgba(200,140,255,.6); border-radius: 10px; padding: 6px 14px; font-size: 14px; font-weight: 600; }
+#tombol-bisu { position: absolute; top: 10px; right: 10px; pointer-events: auto; background: rgba(10,6,20,.72); border: 1px solid rgba(255,170,40,.45); color: #f5eeda; border-radius: 10px; width: 42px; height: 42px; font-size: 20px; cursor: pointer; }
+
+/* Prompt & pesan */
+#prompt { position: fixed; left: 50%; bottom: 22%; transform: translateX(-50%); z-index: 10; background: rgba(10,6,20,.82); border: 1px solid #ffaa28; border-radius: 12px; padding: 10px 18px; font-size: 17px; font-weight: 600; text-align: center; }
+#prompt-tombol { color: #ffaa28; }
+#pesan { position: fixed; left: 50%; top: 30%; transform: translateX(-50%); z-index: 11; background: rgba(10,6,20,.88); border: 1px solid rgba(255,170,40,.7); border-radius: 12px; padding: 12px 22px; font-size: 18px; font-weight: 700; text-align: center; max-width: 86%; }
+
+/* Panel kostum */
+#panel-kostum { position: fixed; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.6); }
+.panel-kotak { background: #1a0f2e; border: 2px solid #ffaa28; border-radius: 16px; padding: 22px; width: min(92%, 460px); text-align: center; }
+.panel-kotak h2 { margin-bottom: 6px; font-size: 26px; }
+.panel-sub { color: #cbb8e8; font-size: 14px; margin-bottom: 16px; }
+.kostum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.tombol-kostum { background: #2a1848; border: 1px solid #7a4fd0; color: #f5eeda; border-radius: 12px; padding: 14px 8px; font-size: 19px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+.tombol-kostum span { font-size: 12px; font-weight: 400; color: #cbb8e8; }
+.tombol-kostum:hover, .tombol-kostum.aktif { background: #4a2a78; border-color: #ffaa28; }
+
+/* Menu utama & layar hasil */
+#menu-utama, #layar-menang, #layar-kalah { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: rgba(5,2,12,.72); padding: 16px; overflow-y: auto; }
+.menu-kotak, .hasil-kotak { background: linear-gradient(160deg, #1c0f33, #12081f); border: 2px solid #ffaa28; border-radius: 20px; padding: 28px 24px; width: min(94%, 520px); text-align: center; box-shadow: 0 0 60px rgba(255,140,0,.25); }
+.menu-kotak h1 { font-size: 40px; line-height: 1.1; color: #ffb340; text-shadow: 0 0 24px rgba(255,140,0,.6); margin-bottom: 14px; }
+.menu-kotak h1 span { font-size: 30px; color: #d9a5ff; }
+.menu-cerita { font-size: 16px; line-height: 1.55; color: #efe6ff; margin-bottom: 16px; }
+.menu-cara { text-align: left; background: rgba(0,0,0,.35); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; font-size: 15px; line-height: 1.9; }
+.tombol-utama { background: linear-gradient(180deg, #ff9d00, #e06a00); color: #fff; border: none; border-radius: 14px; padding: 15px 34px; font-size: 20px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 18px rgba(255,140,0,.45); }
+.tombol-utama:hover { filter: brightness(1.12); }
+.tombol-kecil { font-size: 15px; padding: 10px 22px; }
+.menu-kontrol { margin-top: 14px; font-size: 13px; color: #a98fc9; }
+.hasil-kotak h1 { font-size: 38px; margin-bottom: 12px; color: #ffb340; }
+.hasil-kotak p { font-size: 17px; line-height: 1.5; margin-bottom: 10px; }
+.hasil-detail { color: #cbb8e8; font-weight: 600; margin-bottom: 18px !important; }
+
+/* Kontrol sentuh */
+#kontrol-sentuh { position: fixed; inset: 0; z-index: 12; pointer-events: none; }
+#joystick { position: absolute; left: 22px; bottom: 26px; width: 128px; height: 128px; border-radius: 50%; background: rgba(255,255,255,.08); border: 2px solid rgba(255,255,255,.3); pointer-events: auto; }
+#joystick-tuas { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; background: rgba(255,170,40,.55); border: 2px solid rgba(255,255,255,.5); }
+#tombol-sentuh-kanan { position: absolute; right: 20px; bottom: 30px; display: flex; flex-direction: column; gap: 14px; pointer-events: auto; }
+#tombol-aksi, #tombol-kemampuan { width: 74px; height: 74px; border-radius: 50%; border: 2px solid rgba(255,255,255,.55); font-size: 30px; color: #fff; cursor: pointer; }
+#tombol-aksi { background: rgba(255,157,0,.75); }
+#tombol-kemampuan { background: rgba(122,79,208,.75); width: 62px; height: 62px; font-size: 24px; align-self: flex-end; }
+#tombol-kemampuan:disabled { opacity: .35; }
+
+@media (max-width: 640px) {
+  .hud-kotak { font-size: 12px; padding: 5px 8px; }
+  #hud-kemampuan { top: 48px; font-size: 12px; }
+  .menu-kotak h1 { font-size: 32px; }
+  .menu-kotak h1 span { font-size: 24px; }
+  #prompt { bottom: 32%; font-size: 15px; }
+}
