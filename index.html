@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Rumah Hantu: Pesta Kostum</title>
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="game-container"></div>
+
+<!-- Lapisan efek visual kostum & bahaya (di atas kanvas, di bawah HUD) -->
+<div id="vignette-kostum"></div>
+<div id="vignette-bahaya"></div>
+<div id="vignette-gelap"></div>
+
+<!-- HUD -->
+<div id="hud" class="hidden">
+  <div id="hud-atas">
+    <div class="hud-kotak" id="hud-jam">🕚 23:00</div>
+    <div class="hud-kotak" id="hud-lilin">🕯️ Lilin: 0/6</div>
+    <div class="hud-kotak" id="hud-kostum">🎭 Kostum: Biasa</div>
+    <div class="hud-kotak" id="hud-ruangan">🏠 Lobi</div>
+  </div>
+  <div id="hud-kemampuan" class="hidden">✨ <span id="hud-kemampuan-teks"></span></div>
+  <button id="tombol-bisu" title="Bisu">🔊</button>
+</div>
+
+<!-- Prompt interaksi -->
+<div id="prompt" class="hidden"><span id="prompt-teks"></span> <span id="prompt-tombol">[E]</span></div>
+
+<!-- Pesan singkat di tengah layar -->
+<div id="pesan" class="hidden"></div>
+
+<!-- Panel pilih kostum (dari lemari) -->
+<div id="panel-kostum" class="hidden">
+  <div class="panel-kotak">
+    <h2>🎭 Pilih Kostum</h2>
+    <p class="panel-sub">Setiap kostum punya satu kekuatan. Pilih dengan bijak.</p>
+    <div class="kostum-grid">
+      <button class="tombol-kostum" data-kostum="hantu">👻 Hantu<span>Tembus dinding 5 dtk</span></button>
+      <button class="tombol-kostum" data-kostum="vampir">🧛 Vampir<span>Lihat dalam gelap</span></button>
+      <button class="tombol-kostum" data-kostum="labu">🎃 Labu<span>Nakuti hantu kecil</span></button>
+      <button class="tombol-kostum" data-kostum="penyihir">🧙 Penyihir<span>Buka pintu terkunci</span></button>
+    </div>
+    <button id="tombol-tutup-kostum" class="tombol-utama tombol-kecil">Tutup</button>
+  </div>
+</div>
+
+<!-- Menu utama -->
+<div id="menu-utama">
+  <div class="menu-kotak">
+    <h1>🏚️ Rumah Hantu<br><span>Pesta Kostum</span></h1>
+    <p class="menu-cerita">Kamu datang ke pesta kostum Halloween di sebuah mansion.
+      Saat tiba, pesta sudah bubar — para tamu berubah jadi hantu.
+      Kumpulkan <b>6 lilin</b>, hindari hantu, dan keluar lewat pintu utama
+      <b>sebelum tengah malam</b>.</p>
+    <div class="menu-cara">
+      <div>🕯️ Kumpulkan 6 lilin di 5 ruangan</div>
+      <div>🎭 Ganti kostum di lemari — tiap kostum punya kekuatan</div>
+      <div>👻 Hantu patroli akan mengejarmu kalau terlihat</div>
+      <div>🕛 Keluar sebelum jam 00:00</div>
+    </div>
+    <button id="tombol-mulai" class="tombol-utama">▶ Mulai Bermain</button>
+    <p class="menu-kontrol" id="teks-kontrol">WASD bergerak • Mouse melihat • E interaksi • Q kemampuan</p>
+  </div>
+</div>
+
+<!-- Layar menang -->
+<div id="layar-menang" class="hidden">
+  <div class="hasil-kotak">
+    <h1>🎉 Kamu Lolos!</h1>
+    <p>Kamu berhasil keluar dari mansion berhantu sebelum tengah malam.</p>
+    <p class="hasil-detail" id="menang-detail">Lilin: 6/6 • Sisa waktu: 00:00</p>
+    <button id="tombol-ulang-menang" class="tombol-utama">↻ Main Lagi</button>
+  </div>
+</div>
+
+<!-- Layar kalah -->
+<div id="layar-kalah" class="hidden">
+  <div class="hasil-kotak">
+    <h1>👻 Kamu Kalah</h1>
+    <p class="hasil-detail" id="kalah-alasan">Tengah malam tiba.</p>
+    <button id="tombol-ulang-kalah" class="tombol-utama">↻ Main Lagi</button>
+  </div>
+</div>
+
+<!-- Kontrol sentuh (HP) -->
+<div id="kontrol-sentuh" class="hidden">
+  <div id="joystick"><div id="joystick-tuas"></div></div>
+  <div id="tombol-sentuh-kanan">
+    <button id="tombol-aksi" title="Aksi">✋</button>
+    <button id="tombol-kemampuan" title="Kemampuan">✨</button>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
