@@ -204,9 +204,10 @@ rumah-hantu-pesta-kostum/
 
 - **Jumlah:** 3 hantu patroli + 4 hantu kecil = 7 hantu total.
 - **Rute patroli (contoh, disesuaikan saat implementasi):**
-  - Hantu A: Lobi → koridor perpustakaan → kembali ke lobi (loop).
-  - Hantu B: Lobi → koridor dapur → kembali ke lobi (loop).
-  - Hantu C: Tangga basement ↔ tangga loteng (melewati lobi).
+  - Hantu A: Perpustakaan saja (ujung barat ↔ dekat pintu perpustakaan) — tidak masuk lobi.
+  - Hantu B: Dapur saja (ujung timur ↔ dekat pintu dapur) — tidak masuk lobi.
+  - Hantu C: Basement saja (tidak naik ke lobi/loteng).
+- **Masa tenggang spawn:** 5 detik pertama setelah mulai, hantu patroli tidak mengejar dan tidak bisa menangkap. Rute patroli dijaga agar tidak ada hantu patroli yang bisa melihat titik spawn pemain (lobi, 0, 2.5) saat permainan dimulai — lobi adalah zona aman awal, bahaya ada di ruangan lain.
 - **Kecepatan:** patroli ~1,5 m/detik; kejar ~2,4 m/detik; pemain jalan 3,5 m/detik — pemain bisa lari dari kejaran tapi tidak bisa mengabaikan hantu.
 - **Garis pandang:** raycast dari posisi mata hantu ke pemain; jika ada dinding di antaranya, hantu tidak melihat pemain.
 - **Hantu kecil:** berkeliaran acak di satu ruangan masing-masing (perpustakaan 1, dapur 1, basement 1, loteng 1); kecepatan ~2 m/detik; tidak punya mode kejar jarak jauh — mereka menangkap hanya jika pemain mendekat (< 2 m) tanpa kostum Labu.
